@@ -27,6 +27,17 @@ export const updatePassword = async (formData) => {
     return response.data;
 };
 
+export const deactivateUser = async (formData) => {
+    const response = await axios.patch(`${API_BASE}/users/deactive`, formData);
+    return response.data;
+};
+
+export const deleteSingleUser = async (formData) => {
+    const response = await axios.delete(`${API_BASE}/users/delete`, {
+        data: formData
+    });
+    return response.data;
+};
 
 export const registerUser = async (formData) => {
   const res = await fetch(`${API_BASE}/register`, { method: "POST", body: formData });

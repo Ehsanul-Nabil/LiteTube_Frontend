@@ -31,7 +31,7 @@ export default function Register({ form, setForm, onRegister }) {
           {/* Username Input */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-              Username
+              Username <span className="text-red-500">*</span>
             </label>
             <input 
               disabled={loading}
@@ -45,7 +45,7 @@ export default function Register({ form, setForm, onRegister }) {
           {/* Email Input */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-              Email Address
+              Email Address <span className="text-red-500">*</span>
             </label>
             <input 
               disabled={loading}
@@ -60,7 +60,7 @@ export default function Register({ form, setForm, onRegister }) {
           {/* Password Input */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-              Password
+              Password <span className="text-red-500">*</span>
             </label>
             <input 
               disabled={loading}
@@ -69,6 +69,36 @@ export default function Register({ form, setForm, onRegister }) {
               type="password" 
               value={form.password || ""}
               onChange={(e) => setForm({ ...form, password: e.target.value })} 
+            />
+          </div>
+
+          {/* Phone Input (Optional) */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              Phone Number <span className="text-xs text-gray-400 font-normal">(Optional)</span>
+            </label>
+            <input 
+              disabled={loading}
+              type="text"
+              className="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-950 border border-gray-300 dark:border-zinc-800 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400 disabled:opacity-50 disabled:cursor-not-allowed transition" 
+              placeholder="+880 1XXXXXXXXX" 
+              value={form.phone || ""}
+              onChange={(e) => setForm({ ...form, phone: e.target.value })} 
+            />
+          </div>
+
+          {/* Address Input (Optional) */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              Address <span className="text-xs text-gray-400 font-normal">(Optional)</span>
+            </label>
+            <input 
+              disabled={loading}
+              type="text"
+              className="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-950 border border-gray-300 dark:border-zinc-800 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400 disabled:opacity-50 disabled:cursor-not-allowed transition" 
+              placeholder="Your address" 
+              value={form.phone || form.address || ""} // অথবা শুধু form.address || ""
+              onChange={(e) => setForm({ ...form, address: e.target.value })} 
             />
           </div>
 

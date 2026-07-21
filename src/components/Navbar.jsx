@@ -18,6 +18,7 @@ export default function Navbar({ user, onLogout }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  
   const handleLogoutClick = () => {
     onLogout();
     navigate("/");

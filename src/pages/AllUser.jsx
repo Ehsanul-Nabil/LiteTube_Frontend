@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { getusers } from "../api/api";
-import { Users, Loader2, AlertCircle } from "lucide-react";
+import { Users, Loader2, AlertCircle, Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const AllUser = ({ user }) => {
   const [usersList, setUsersList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // ইউজার বা টোকেন না থাকলে রিকোয়েস্ট পাঠানোর দরকার নেই
     if (!user || !user.token) return;
 
     const fetchUsers = async () => {
@@ -60,6 +61,8 @@ const AllUser = ({ user }) => {
                 <th className="py-3 px-4 font-semibold">Username</th>
                 <th className="py-3 px-4 font-semibold">Email</th>
                 <th className="py-3 px-4 font-semibold">Role</th>
+                <th className="py-3 px-4 font-semibold">Status</th>
+                <th className="py-3 px-4 font-semibold text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -77,11 +80,37 @@ const AllUser = ({ user }) => {
                         {u.type}
                       </span>
                     </td>
+                    <td className="py-3 px-4">
+                      <span className={`px-2.5 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1.5 ${
+                        u.is_active 
+                          ? "bg-green-100 text-green-700 dark:bg-green-950/50 dark:text-green-400" 
+                          : "bg-red-100 text-red-600 dark:bg-red-950/50 dark:text-red-400"
+                      }`}>
+                        <span className={`w-1.5 h-1.5 rounded-full ${u.is_active ? "bg-green-500" : "bg-red-500"}`}></span>
+                        {u.is_active ? "Active" : "Inactive"}
+                      </span>
+                    </td>
+                    <td className="py-3 px-4 text-right">
+                      {user?.username === u.username ? (
+                        <span className="text-xs text-gray-400 dark:text-zinc-500 italic px-2 py-1">
+                          Current User
+                        </span>
+                      ) : (
+                        <button
+                          onClick={() => navigate(`/remove_user/${u.username}`)}
+                          className="p-2 bg-red-50 hover:bg-red-100 dark:bg-red-950/30 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400 rounded-xl transition inline-flex items-center gap-1 text-xs font-medium"
+                          title="Delete User"
+                        >
+                          <Trash2 size={15} />
+                          Delete
+                        </button>
+                      )}
+                    </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="3" className="text-center py-6 text-gray-400">No users found.</td>
+                  <td colSpan="5" className="text-center py-6 text-gray-400">No users found.</td>
                 </tr>
               )}
             </tbody>
@@ -92,4 +121,4 @@ const AllUser = ({ user }) => {
   );
 };
 
-export default  AllUser; 
+export default AllUser;

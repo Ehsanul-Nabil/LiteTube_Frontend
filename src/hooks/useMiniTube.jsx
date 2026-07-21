@@ -18,7 +18,8 @@ export function useMiniTube() {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
     const profile_pic = localStorage.getItem("profile_pic");
-    if (token) setUser({ token, username: token,role,profile_pic });
+    const is_active = localStorage.getItem("is_active");
+    if (token) setUser({ token, username: token,role,profile_pic,is_active });
     console.log("user ",user)
     fetchVideos();
   }, []);
@@ -68,16 +69,32 @@ const handleLogin = async () => {
     localStorage.setItem("token", data.access_token);
     localStorage.setItem("role", data.user_role);
     localStorage.setItem("profile_pic", data.profile_pic);
-    setUser({ token: data.access_token, username: form.username,role:data.user_role,profile_pic:data.profile_pic });
+    localStorage.setItem("is_active", data.is_active);
+    setUser({ token: data.access_token, username: form.username,role:data.user_role,profile_pic:data.profile_pic,is_active:data.is_active });
     navigate("/");
   };
 
   
-const handleLogout = () => {
-    localStorage.removeItem("token");
-    setUser(null);
-    // window.location.reload(); 
-  };
+const handleLogout = async () => {
+    try {
+        // Optional: If you want to notify the backend to set is_active = false
+        const formData = new FormData();
+        formData.append("token", user?.token);
+        await api.deactivateUser(formData); // or your corresponding logout/inactive endpoint
+    } catch (error) {
+        console.error("Logout error:", error);
+    } finally {
+        localStorage.removeItem("token");
+        localStorage.removeItem("is_active");
+        localStorage.removeItem("profile_pic");
+        localStorage.removeItem("role");
+
+        // Reset user state
+        setUser(null);
+        // Optional: reload or redirect to login page
+        // window.location.href = "/login";
+    }
+};
 
   const handleUpload = async () => {
     if (!upload.title.trim() || !upload.description.trim()) return alert("Title and description are mandatory!");

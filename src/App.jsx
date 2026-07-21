@@ -12,6 +12,7 @@ import Become_uploader from "./pages/Become_uploader";
 import Promote_user from "./pages/Promote_user";
 import AllUser from "./pages/AllUser";
 import UpdateProfile from "./pages/UpdateProfile";
+import RemoveUser from "./pages/RemoveUser";
 
 export default function App() {
   const {
@@ -63,7 +64,7 @@ export default function App() {
           <Route path="/promote" element={<Promote_user user={user}/>} />
           <Route path="/allUser" element={<AllUser user={user}/>} />
           <Route path="/update_profile" element={<UpdateProfile user={user}/>} />
-        </Routes>
+          <Route path="/remove_user/:username" element={<RemoveUser user={user} />} />        </Routes>
       </main>
 
     </div>
